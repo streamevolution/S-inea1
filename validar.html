@@ -10,7 +10,7 @@
         
         /* Contenedor del Banner NUEVO (Afuera de la tarjeta, tamaño ajustado) */
         .banner-exterior {
-            max-width: 240px; /* Lo redujimos de 300px a 240px */
+            max-width: 240px; 
             margin: 0 auto 15px auto; 
             display: block;
         }
@@ -94,6 +94,10 @@
             <span class="value" id="val-nombre"></span>
         </div>
         <div class="item">
+            <span class="label">Nivel Educativo</span>
+            <span class="value" id="val-nivel"></span>
+        </div>
+        <div class="item">
             <span class="label">CURP</span>
             <span class="value" id="val-curp"></span>
         </div>
@@ -139,15 +143,14 @@
             const q = params.get('q');
 
             try {
-                // AQUÍ ESTÁ LA MAGIA: JSON.parse es extremadamente estricto. 
                 const partes = JSON.parse(decodeURIComponent(escape(atob(q))));
 
-                // Validamos que la información esté completa
-                if (!Array.isArray(partes) || partes.length < 8) {
+                // Validamos que los 9 campos estén completos
+                if (!Array.isArray(partes) || partes.length < 9) {
                     throw new Error("Código incompleto");
                 }
 
-                // Asignamos los valores si todo fue perfecto
+                // Asignamos los valores correspondientes
                 document.getElementById('val-nombre').textContent = (partes[0] || '').toUpperCase();
                 document.getElementById('val-curp').textContent = (partes[1] || '').toUpperCase();
                 document.getElementById('val-inst').textContent = partes[2] || '';
@@ -157,6 +160,7 @@
                 
                 let fechaRaw = partes[6] || '';
                 document.getElementById('val-folio').textContent = partes[7] || '';
+                document.getElementById('val-nivel').textContent = (partes[8] || '').toUpperCase();
 
                 // --- TRADUCTOR INTELIGENTE DE FECHAS ---
                 let fechaFormateada = fechaRaw.toUpperCase();
@@ -230,7 +234,7 @@
                 
                 document.getElementById('val-fecha').textContent = fechaFormateada;
 
-                // 4. Si el código no fue alterado, mostramos la pantalla
+                // Si todo está correcto, mostramos la pantalla
                 document.getElementById('cuerpoPagina').style.display = "block";
 
             } catch (error) {
